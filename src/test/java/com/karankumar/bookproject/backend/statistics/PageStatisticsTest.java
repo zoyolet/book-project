@@ -47,7 +47,7 @@ class PageStatisticsTest {
     }
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws StatisticException {
         bookService.deleteAll();
         StatisticTestUtils.populateReadBooks(bookService, predefinedShelfService);
         PageStatisticsTest.pageStatistics = new PageStatistics(predefinedShelfService);
@@ -83,7 +83,7 @@ class PageStatisticsTest {
     }
 
     @Test
-    void notDivideAveragePageLengthByZero() {
+    void notDivideAveragePageLengthByZero() throws StatisticException {
         resetPageStatistics();
         assertThat(pageStatistics.calculateAveragePageLength()).isNull();
     }
@@ -96,7 +96,7 @@ class PageStatisticsTest {
     }
 
     @Test
-    void calculateAveragePageLengthWithFloatPointCalculationCorrectly() {
+    void calculateAveragePageLengthWithFloatPointCalculationCorrectly() throws StatisticException {
         // given
         StatisticTestUtils.deleteBook(StatisticTestUtils.getBookWithHighestRating());
         pageStatistics = new PageStatistics(predefinedShelfService);
@@ -109,7 +109,7 @@ class PageStatisticsTest {
         assertThat(actual).isEqualTo(averagePageLength);
     }
 
-    private void resetPageStatistics() {
+    private void resetPageStatistics() throws StatisticException {
         bookService.deleteAll();
         pageStatistics = new PageStatistics(predefinedShelfService);
     }

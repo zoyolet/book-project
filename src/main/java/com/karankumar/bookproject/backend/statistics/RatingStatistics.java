@@ -20,6 +20,7 @@ package com.karankumar.bookproject.backend.statistics;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import com.karankumar.bookproject.backend.statistics.StatisticException;
 import lombok.extern.java.Log;
 
 import java.util.ArrayList;
@@ -30,9 +31,13 @@ import java.util.List;
 public class RatingStatistics extends Statistics {
     private List<Book> readBooksRated = new ArrayList<>();
 
-    public RatingStatistics(PredefinedShelfService predefinedShelfService) {
+    public RatingStatistics(PredefinedShelfService predefinedShelfService) throws StatisticException {
         super(predefinedShelfService);
         readBooksRated = findReadBooksWithRatings();
+        if(readBooksRated.isEmpty()){
+            throw new StatisticException(
+                    "The RatingStatistics is empty");
+        }
     }
 
     /**

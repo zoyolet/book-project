@@ -21,6 +21,7 @@ import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.BookGenre;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import com.karankumar.bookproject.backend.statistics.StatisticException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,9 +34,13 @@ public class GenreStatistics extends Statistics {
     protected static final int MINIMUM_NUMBER_OF_GENRES = 1;
     private final List<Book> readBooksWithGenresAndRatings;
 
-    public GenreStatistics(PredefinedShelfService predefinedShelfService) {
+    public GenreStatistics(PredefinedShelfService predefinedShelfService) throws StatisticException {
         super(predefinedShelfService);
         readBooksWithGenresAndRatings = findReadBooksWithGenresAndRatings();
+        if(readBooksWithGenresAndRatings.isEmpty()){
+            throw new StatisticException(
+                    "The GenreStatistics is empty");
+        }
     }
 
     /**

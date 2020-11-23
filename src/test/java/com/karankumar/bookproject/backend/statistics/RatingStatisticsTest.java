@@ -47,7 +47,7 @@ class RatingStatisticsTest {
     }
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws StatisticException {
         bookService.deleteAll(); // reset
         StatisticTestUtils.populateReadBooks(bookService, predefinedShelfService);
         bookWithNoRating = StatisticTestUtils.getBookWithLowestRating();
@@ -64,7 +64,7 @@ class RatingStatisticsTest {
     }
 
     @Test
-    void notFindNonExistentLowestRatedBook() {
+    void notFindNonExistentLowestRatedBook() throws StatisticException {
         resetRatingStatistics();
         assertThat(ratingStatistics.findLeastLikedBook()).isNull();
     }
@@ -77,7 +77,7 @@ class RatingStatisticsTest {
     }
 
     @Test
-    void notFindNonExistentHighestRatedBook() {
+    void notFindNonExistentHighestRatedBook() throws StatisticException {
         resetRatingStatistics();
         assertThat(ratingStatistics.findMostLikedBook()).isNull();
     }
@@ -97,12 +97,12 @@ class RatingStatisticsTest {
     }
 
     @Test
-    void notDivideAverageRatingByZero() {
+    void notDivideAverageRatingByZero() throws StatisticException {
         resetRatingStatistics();
         assertThat(ratingStatistics.calculateAverageRatingGiven()).isNull();
     }
 
-    private void resetRatingStatistics() {
+    private void resetRatingStatistics() throws StatisticException {
         bookService.deleteAll();
         ratingStatistics = new RatingStatistics(predefinedShelfService);
     }

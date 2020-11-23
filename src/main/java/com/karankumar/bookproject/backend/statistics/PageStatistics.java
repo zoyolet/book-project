@@ -19,6 +19,7 @@ package com.karankumar.bookproject.backend.statistics;
 
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import com.karankumar.bookproject.backend.statistics.StatisticException;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -27,9 +28,13 @@ import java.util.List;
 public class PageStatistics extends Statistics {
     private final List<Book> booksWithPageCount;
 
-    public PageStatistics(PredefinedShelfService predefinedShelfService) {
+    public PageStatistics(PredefinedShelfService predefinedShelfService) throws StatisticException {
         super(predefinedShelfService);
         booksWithPageCount = findBooksWithPageCountSpecified();
+        if(booksWithPageCount.isEmpty()){
+            throw new StatisticException(
+                    "The PageStatistics is empty");
+        }
     }
 
     /**

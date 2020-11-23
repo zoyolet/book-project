@@ -44,7 +44,7 @@ class GenreStatisticsTest {
     }
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws StatisticException {
         resetBookService();
         StatisticTestUtils.populateReadBooks(bookService, predefinedShelfService);
         genreStatistics = new GenreStatistics(predefinedShelfService);
@@ -92,7 +92,7 @@ class GenreStatisticsTest {
 
     @Test
     @DisplayName("not show the most liked genre statistic if there is only one read genre")
-    void notShowMostLikedGenreWhenOnlyOneReadGenreExists() {
+    void notShowMostLikedGenreWhenOnlyOneReadGenreExists() throws StatisticException {
         // given
         resetBookService();
         saveBook();
@@ -111,7 +111,7 @@ class GenreStatisticsTest {
 
     @Test
     @DisplayName("not show the least liked genre statistic if there is only one read genre")
-    void notShowLeastLikedGenreWhenOnlyOneReadGenreExists() {
+    void notShowLeastLikedGenreWhenOnlyOneReadGenreExists() throws StatisticException {
         // given
         resetBookService();
         saveBook();

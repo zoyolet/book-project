@@ -17,17 +17,9 @@
 
 package com.karankumar.bookproject.backend.statistics;
 
-import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 
-import java.util.Set;
-
-public class Statistics {
-    protected final Set<Book> readShelfBooks;
-
-    public Statistics(PredefinedShelfService predefinedShelfService) throws StatisticException {
-        PredefinedShelf readShelf = predefinedShelfService.findReadShelf();
-        readShelfBooks = readShelf.getBooks();
+public class StatisticException extends Exception {
+    public StatisticException(final String message) {
+        super(message);
     }
 }

@@ -24,6 +24,7 @@ import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.statistics.GenreStatistics;
 import com.karankumar.bookproject.backend.statistics.PageStatistics;
 import com.karankumar.bookproject.backend.statistics.RatingStatistics;
+import com.karankumar.bookproject.backend.statistics.StatisticException;
 import com.karankumar.bookproject.ui.MainView;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.html.Div;
@@ -37,13 +38,12 @@ import lombok.extern.java.Log;
 import java.text.DecimalFormat;
 import java.util.Optional;
 
-
 @Route(value = "statistics", layout = MainView.class)
 @PageTitle("Statistics | Book Project")
 @Log
 public class StatisticsView extends VerticalLayout {
 
-    public StatisticsView(PredefinedShelfService predefinedShelfService) {
+    public StatisticsView(PredefinedShelfService predefinedShelfService) throws StatisticException {
         for (StatisticType statistic : StatisticType.values()) {
             String caption = statistic.getCaption();
             Optional<String> value = statistic.calculateStatistic(predefinedShelfService);
@@ -74,7 +74,8 @@ public class StatisticsView extends VerticalLayout {
     public enum StatisticType {
         AVERAGE_RATING("Average rating given:") {
             @Override
-            public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
+            public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService)
+                    throws StatisticException {
                 RatingStatistics ratingStatistics = new RatingStatistics(predefinedShelfService);
                 Optional<Double> averageRating =
                         Optional.ofNullable(ratingStatistics.calculateAverageRatingGiven());
@@ -84,7 +85,8 @@ public class StatisticsView extends VerticalLayout {
         },
         MOST_LIKED_BOOK("Most liked book:") {
             @Override
-            public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
+            public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService)
+                    throws StatisticException {
                 RatingStatistics ratingStatistics = new RatingStatistics(predefinedShelfService);
                 Optional<Book> mostLikedBook = Optional.ofNullable(ratingStatistics.findMostLikedBook());
                 return mostLikedBook.map(book ->
@@ -93,7 +95,8 @@ public class StatisticsView extends VerticalLayout {
         },
         LEAST_LIKED_BOOK("Least liked book:") {
             @Override
-            public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
+            public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService)
+                    throws StatisticException {
                 RatingStatistics ratingStatistics = new RatingStatistics(predefinedShelfService);
                 Optional<Book> leastLikedBook =
                         Optional.ofNullable(ratingStatistics.findLeastLikedBook());
@@ -103,7 +106,8 @@ public class StatisticsView extends VerticalLayout {
         },
         MOST_READ_GENRE("Most read genre:") {
             @Override
-            public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
+            public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService)
+                    throws StatisticException {
                 GenreStatistics genreStatistics = new GenreStatistics(predefinedShelfService);
                 Optional<BookGenre> mostReadGenre =
                         Optional.ofNullable(genreStatistics.findMostReadGenre());
@@ -112,7 +116,8 @@ public class StatisticsView extends VerticalLayout {
         },
         MOST_LIKED_GENRE("Most liked genre read:") {
             @Override
-            public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
+            public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService)
+                    throws StatisticException {
                 GenreStatistics genreStatistics = new GenreStatistics(predefinedShelfService);
                 Optional<BookGenre> mostLikedGenre =
                         Optional.ofNullable(genreStatistics.findMostLikedGenre());
@@ -121,7 +126,8 @@ public class StatisticsView extends VerticalLayout {
         },
         LEAST_LIKED_GENRE("Least liked genre read:") {
             @Override
-            public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
+            public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService)
+                    throws StatisticException {
                 GenreStatistics genreStatistics = new GenreStatistics(predefinedShelfService);
                 Optional<BookGenre> leastLikedGenre =
                         Optional.ofNullable(genreStatistics.findLeastLikedGenre());
@@ -130,7 +136,8 @@ public class StatisticsView extends VerticalLayout {
         },
         AVERAGE_PAGE_LENGTH("Average page length:") {
             @Override
-            public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
+            public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService)
+                    throws StatisticException {
                 PageStatistics pageStatistics = new PageStatistics(predefinedShelfService);
                 Optional<Double> averagePageLength =
                         Optional.ofNullable(pageStatistics.calculateAveragePageLength());
@@ -139,7 +146,7 @@ public class StatisticsView extends VerticalLayout {
         },
         LONGEST_BOOK("Longest book read:") {
             @Override
-            public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
+            public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) throws StatisticException {
                 PageStatistics pageStatistics = new PageStatistics(predefinedShelfService);
                 Optional<Book> longestBook =
                         Optional.ofNullable(pageStatistics.findBookWithMostPages());
@@ -156,6 +163,7 @@ public class StatisticsView extends VerticalLayout {
             this.caption = caption;
         }
 
-        public abstract Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService);
+        public abstract Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService)
+                throws StatisticException;
     }
 }

@@ -21,6 +21,7 @@ import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import com.karankumar.bookproject.backend.statistics.StatisticException;
 import com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils;
 
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooksInDifferentGenres;
@@ -54,8 +55,10 @@ import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUt
 @DisplayName("StatisticsView should")
 class StatisticsViewTest {
 
-    @Autowired private PredefinedShelfService predefinedShelfService;
-    @Autowired private BookService bookService;
+    @Autowired
+    private PredefinedShelfService predefinedShelfService;
+    @Autowired
+    private BookService bookService;
 
     private StatisticsView statisticsView;
 
@@ -65,7 +68,7 @@ class StatisticsViewTest {
     }
 
     @Test
-    void createCompleteStatisticsView() {
+    void createCompleteStatisticsView() throws StatisticException {
         // given
         populateDataWithBooksInDifferentGenres(bookService, predefinedShelfService);
 
@@ -78,7 +81,7 @@ class StatisticsViewTest {
     }
 
     @Test
-    void shouldShowGenreAndRatingStatisticsWhenMoreThanOneGenre() {
+    void shouldShowGenreAndRatingStatisticsWhenMoreThanOneGenre() throws StatisticException {
         // given
         populateDataWithBooksInDifferentGenres(bookService, predefinedShelfService);
 
@@ -90,7 +93,7 @@ class StatisticsViewTest {
     }
 
     @Test
-    void shouldNotShowGenreAndRatingStatisticsWhenLessThanOneGenre() {
+    void shouldNotShowGenreAndRatingStatisticsWhenLessThanOneGenre() throws StatisticException {
         // given
         populateDataWithBook(bookService, predefinedShelfService);
 
@@ -115,7 +118,7 @@ class StatisticsViewTest {
     }
 
     @Test
-    void haveAValueForEachStatistic() {
+    void haveAValueForEachStatistic() throws StatisticException {
         // given
         populateDataWithBooksInDifferentGenres(bookService, predefinedShelfService);
 
@@ -132,7 +135,7 @@ class StatisticsViewTest {
     }
 
     @Test
-    void showStillOtherStatisticsWithoutPageCount() {
+    void showStillOtherStatisticsWithoutPageCount() throws StatisticException {
         // given
         populateDataWithBooksDifferentGenresWithoutPageCount(bookService, predefinedShelfService);
 
@@ -147,7 +150,7 @@ class StatisticsViewTest {
     }
 
     @Test
-    void showStillOtherStatisticsWithoutGenreInformation() {
+    void showStillOtherStatisticsWithoutGenreInformation() throws StatisticException {
         // given
         populateDataWithBooksWithoutGenre(bookService, predefinedShelfService);
 
@@ -162,7 +165,7 @@ class StatisticsViewTest {
     }
 
     @Test
-    void notShowTheMostLikedAndLeastLikedBookWithOnlyOneBook() {
+    void notShowTheMostLikedAndLeastLikedBookWithOnlyOneBook() throws StatisticException {
         // given
         populateDataWithOnlyOneBook(bookService, predefinedShelfService);
 
@@ -174,7 +177,7 @@ class StatisticsViewTest {
     }
 
     @Test
-    void showOtherStatisticsWithoutRatingInformation() {
+    void showOtherStatisticsWithoutRatingInformation() throws StatisticException {
         // given
         populateDataWithBooksWithoutRatings(bookService, predefinedShelfService);
 
