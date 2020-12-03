@@ -78,6 +78,17 @@ class StatisticsViewTest {
     }
 
     @Test
+    void createCompleteStatisticsViewWithoutBooks() {
+        // given
+        bookService.deleteAll();
+
+        // when
+        statisticsView = new StatisticsView(predefinedShelfService);
+        // then
+        allStatisticsAreNotShown();
+    }
+
+    @Test
     void shouldShowGenreAndRatingStatisticsWhenMoreThanOneGenre() {
         // given
         populateDataWithBooksInDifferentGenres(bookService, predefinedShelfService);
@@ -106,8 +117,17 @@ class StatisticsViewTest {
               .forEach(statisticType -> valueIsPresent(getStatistic(statisticType)));
     }
 
+    private void allStatisticsAreNotShown() {
+        Arrays.asList(StatisticType.values())
+              .forEach(statisticType -> valueIsNotPresent(getStatistic(statisticType)));
+    }
+
     private void valueIsPresent(StatisticsViewTestUtils.Statistic currentStatistic) {
         assertThat(currentStatistic instanceof StatisticNotFound).isFalse();
+    }
+
+    private void valueIsNotPresent(StatisticsViewTestUtils.Statistic currentStatistic) {
+        assertThat(currentStatistic instanceof StatisticNotFound).isTrue();
     }
 
     private void thereAreNotOtherStatistics() {
